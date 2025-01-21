@@ -10,7 +10,7 @@ OPENWEATHER_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 Собираем:
 ```
-docker build -t bot
+docker build . -t bot
 ```
 
 Заускаем
