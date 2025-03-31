@@ -6,10 +6,10 @@ from pydantic import BaseModel, validator
 class CreateRequest(BaseModel):
     url: str
     alias: Optional[str] = None
-    expires_at: Optional[datetime] = None
+    expires_at: Optional[str] = None
 
-    @validator('expires_at', pre=True)
-    def parse_datetime(cls, value):
+    @validator('expires_at')
+    def parse_datetime(cls, value: str):
         return datetime.strptime(value, '%Y-%m-%d %H:%M')
 
 

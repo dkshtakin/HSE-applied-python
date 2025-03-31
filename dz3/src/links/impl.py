@@ -51,6 +51,8 @@ async def update_link(short_code, url) -> bool:
             return False
         url_to_short_code[data[short_code].url].remove(short_code)
         data[short_code].url = url
+        if url not in url_to_short_code:
+            url_to_short_code[url] = set()
         url_to_short_code[url].add(short_code)
         return True
 
@@ -71,20 +73,22 @@ async def get_stats(short_code):
         return asdict(data[short_code])
 
 
+async def generate_short_code() -> str:
+    while True:
+        characters = string.ascii_letters + string.digits
+        short_code = ''.join(random.choice(characters) for i in range(8))
+        async with data_lock:
+            if short_code not in data:
+                return short_code
+
+
+def is_valid(short_code) -> bool:
+    if short_code == 'search':
+        return False
+    return True
+
+
 async def create_shortcut_impl(request: CreateRequest, background_tasks: BackgroundTasks):
-    async def generate_short_code() -> str:
-        while True:
-            characters = string.ascii_letters + string.digits
-            short_code = ''.join(random.choice(characters) for i in range(8))
-            async with data_lock:
-                if short_code not in data:
-                    return short_code
-
-    def is_valid(short_code) -> bool:
-        if short_code == 'search':
-            return False
-        return True
-
     short_code = request.alias
     if not short_code:
         short_code = await generate_short_code()

@@ -74,3 +74,17 @@ curl -X 'PUT' \
   "url": "https://www.google.com/"
 }'
 ```
+
+### Тестирование
+
+Unit и функциональные тесты лежат в папке `tests/`, процент прокрытия 93%, подробный отчет лежит по пути `htmlcov/index.html`.
+
+Запуск тестов:
+```
+PYTHONPATH=src python -m pytest --cov src tests
+```
+
+Генерация отчета:
+```
+PYTHONPATH=src python -m pytest --cov src tests --cov-report=html
+```
